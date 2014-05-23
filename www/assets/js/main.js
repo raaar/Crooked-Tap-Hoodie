@@ -1,6 +1,8 @@
 // initialize Hoodie
 var hoodie  = new Hoodie()
 
+hoodie.store.findAll('todo').publish()
+
 // initial load of all todo items from the store
 hoodie.store.findAll('todo').then( function(todos) {
   todos.sort( sortByCreatedAt ).forEach( addTodo )
@@ -12,14 +14,18 @@ hoodie.store.findAll('todo').then(function (reviews) {
 })
 
 
+hoodie.global.findAll('todo').done(function (reviews) { 
+  reviews.sort( sortByRating).forEach(topRated);
+});
+
+
+
 
 // when a new todo gets stored, add it to the UI
 hoodie.store.on('add:todo', addTodo)
 hoodie.store.on('remove:todo', removeTodo)
 // clear todo list when the get wiped from store
 hoodie.account.on('signout', clearTodos)
-
-
 
 
 // handle creating a new task
@@ -53,7 +59,7 @@ $('.deleteReview').on('click', function (event) {
 })
 
 
-
+console.log(hoodie.account);
 
 
 
