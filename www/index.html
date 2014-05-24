@@ -15,6 +15,8 @@
   </head>
   <body>
     <div class="container">
+ 
+
       <div class="hero-unit">
         <input id="search" type="search" name="googlesearch">
         <h1>The Crooked Tap</h1>
@@ -70,7 +72,9 @@
         </div><!--/hoodieAccountBar -->
       </div>
 
-      <div class="content">
+
+        <div id="review"></div>
+
         <ul id="todolist"></ul>
 
         <input type="text" id="todoinput"  placeholder="new todo ↵" />
@@ -86,6 +90,7 @@
           <option value="5">5</option>
         </select>
         <br />
+        <textarea id="notes" rows="4" cols="50" placeholder="Tasting notes..."></textarea>
         <a id="submitReview" class="button">Submit</a>
 
 
@@ -95,42 +100,8 @@
 
         <h3>Search results</h3>
         <ul id="searchResults"></ul>
-      </div>
 
-      <div class="code">
-<pre class="language-javascript"><code class="language-javascript">
-// initialize Hoodie
-var hoodie  = new Hoodie()
 
-// initial load of all todo items from the store
-hoodie.store.findAll('todo').then( function(todos) {
-  todos.sort( sortByCreatedAt ).forEach( addTodo )
-})
-
-// when a new todo gets stored, add it to the UI
-hoodie.store.on('add:todo', addTodo)
-// when a user signs out, clear the todo list
-hoodie.account.on('signout', clearTodos)
-
-// handle creating a new task
-$('#todoinput').on('keypress', function(event) {
-  if (event.keyCode == 13) { // ENTER
-    hoodie.store.add('todo', {title: event.target.value});
-    event.target.value = '';
-  }
-})
-
-function addTodo( todo ) {
-  $('#todolist').append('&lt;li&gt;'+todo.title+'&lt;/li&gt;');
-}
-function clearTodos() {
-  $('#todolist').html('');
-}
-function sortByCreatedAt(a, b) {
-  return a.createdAt &gt; b.createdAt
-}
-</code></pre>
-      </div><!-- /.code -->
 
       <footer class="copy">
         <p>&hearts; hood.ie 2014</p>
