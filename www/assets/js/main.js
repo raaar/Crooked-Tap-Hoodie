@@ -1,6 +1,7 @@
 // initialize Hoodie
 var hoodie  = new Hoodie()
 
+//Make DB global
 hoodie.store.findAll('todo').publish()
 
 // initial load of all todo items from the store
@@ -10,13 +11,28 @@ hoodie.store.findAll('todo').then( function(todos) {
 
 //Load best beers from store
 hoodie.store.findAll('todo').then(function (reviews) {
-  reviews.sort( sortByRating).forEach(topRated);
+//  reviews.sort( sortByRating).forEach(topRated);
 })
 
 
 hoodie.global.findAll('todo').done(function (reviews) { 
   reviews.sort( sortByRating).forEach(topRated);
 });
+
+
+function search(term){
+  hoodie.store.findAll('todo').done(function (objects) {
+    filterBeers(objects , term);
+    function filterBeers(db, name) {
+      var results;
+      name = name.toUpperCase();
+      results = db.filter(function(entry) {
+        return entry.beer.toUpperCase().indexOf(name) !== -1;
+      });
+      searchResults(results, term);
+    }
+  });  
+}
 
 
 
@@ -36,13 +52,14 @@ $('#todoinput').on('keypress', function(event) {
   	}
 })
 
+// Construct review object
 $('#submitReview').on('click', function (event) {
-    hoodie.store.add('todo', {
+  hoodie.store.add('todo', {
     	title: $('#todoinput').val(),
     	beer: $('#beerName').val(),
     	rating: $("#selectRating option:selected").text(),
       author: hoodie.account.username
-	});
+});
 
     //console.log( hoodie.account.username); 
     //event.target.value = '';
@@ -52,14 +69,21 @@ $('#submitReview').on('click', function (event) {
 
 })
 
+//Search by name
+$('#search').on('keypress', function(event){
+  if(event.keyCode == 13) { 
+    var query = $('#search').val();
+    search(query); 
+  }
+})
+
 //Delete todo
 $('.deleteReview').on('click', function (event) {
-	//console.log('remove');
 	hoodie.store.remove('todo' , $(this).attr('id'));
 })
 
 
-console.log(hoodie.account);
+
 
 
 
@@ -77,8 +101,6 @@ function addTodo( todo ) {
 function removeTodo (todo) {
 	console.log('remove frontend');
 	console.log(todo);
-	//var item = '#' + todo.id;
-	//$(this).remove();
 	$("[data-review="+todo.id+"]").remove();
 }
 
@@ -96,3 +118,15 @@ function topRated(todo){
   $('#topRated').append('<p>'+ todo.beer +': ' + todo.rating+ '</p>');
 }
 
+
+function searchResults(results, term) {
+  $('#searchResults').html('');
+  if(results.length < 1) {
+    $('#searchResults').html('Sorry, <strong><em>' +  term + '</em></strong> not found');
+  } else {
+    results.forEach(function(review){
+      console.log(review);
+       $('#searchResults').append('<p>'+ review.beer +': ' + review.rating+ '</p>');
+    });
+  }
+}
