@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="no-js">
+<html class="no-js" ng-app="crookedApp">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="components/fontawesome/css/font-awesome.css">
 
+    <script src="/components/angular/angular.min.js"></script>
   </head>
   <body>
     <div class="container">
@@ -76,29 +77,30 @@
         <div id="review"></div>
 
         <ul id="todolist"></ul>
-
-        <input type="text" id="todoinput"  placeholder="new todo ↵" />
-        <input type="text" id="beerName"  placeholder="Beer name" />
-        <input type="text" id="beerType"  placeholder="Beer type" />
-        <br />
-        <select id="selectRating">
-          <option value="">Enter rating</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-        </select>
-        <br />
-        <textarea id="notes" rows="4" cols="50" placeholder="Tasting notes..."></textarea>
-        <a id="submitReview" class="button">Submit</a>
-
+  
+        <form>
+          <input type="text" id="beerName"  placeholder="Beer name" />
+          <input type="text" id="beerType"  placeholder="Beer type" />
+          <input type="text" id="beerBrewery"  placeholder="Brewery" />
+          <input type="text" id="beerAbv"  placeholder="Alcohol by volume" />
+          <br />
+          <select id="selectRating">
+            <option value="">Enter rating</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+          <br />
+          <textarea id="notes" rows="4" cols="50" placeholder="Tasting notes..."></textarea>
+          <a id="submitReview" class="button">Submit</a>
+        </form>
 
         <h3>Highest rated</h3>
         <ul id="topRated"></ul>
 
-
-        <h3>Search results</h3>
+        <div id="queryTitle"></div>
         <ul id="searchResults"></ul>
 
 

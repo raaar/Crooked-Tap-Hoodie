@@ -27,6 +27,23 @@ function search(term){
   });  
 }
 
+function filter(term){
+  //console.log('Tag is:' + term);
+  hoodie.global.findAll('todo').done(function (objects) {
+    filterBeers(objects , term);
+    function filterBeers(db, name) {
+      var results;
+      name = name.toUpperCase();
+      results = db.filter(function(entry) {
+        console.log('tag: ' + entry.tag);
+        return entry.tag.toUpperCase().indexOf(name) !== -1;
+      });
+      searchResults(results, term);
+      console.log(results);
+    }
+  });  
+
+}
 
 // when a new todo gets stored, add it to the UI
 hoodie.store.on('add:todo', addTodo)
@@ -45,19 +62,16 @@ $('#todoinput').on('keypress', function(event) {
 // Construct review object
 $('#submitReview').on('click', function (event) {
   hoodie.store.add('todo', {
-    	title: $('#todoinput').val(),
     	beer: $('#beerName').val(),
+      tag: $('#beerType').val(),
+      brewery: $('#beerBrewery').val(),
+      abv: $('#beerAbv').val(),
     	rating: $("#selectRating option:selected").text(),
       notes: $('#notes').val(),
       author: hoodie.account.username
-});
-
-    //console.log( hoodie.account.username); 
-    //event.target.value = '';
-    //$('#todoinput').val() = '';
-    $('#todoinput').val('');
-    $('#beername').val('');
-
+  });
+  $('#todoinput').val('');
+  $('#beername').val('');
 })
 
 //Search by name
@@ -84,17 +98,23 @@ $('body').on('click','.openReview' ,function(event){
   });
 })
 
+//Filter by tag
+$('body').on('click','.dataFilter', function (e) {
+  e.preventDefault();
+  var term = $(this)[0]['innerText'];
+  filter(term);
+})
 
 
 
 
-function addTodo( todo ) { 
+function addTodo( review ) { 
 	console.log('adding on frontend');
   $('#todolist').append(
-  		'<li data-review="'+todo.id+'"><a class="openReview" data-review="'+todo.id+'">'
-  		+ 'Rating:' + todo.rating +  '</a> <small>By: ' +todo.author+ '</small>' +
-  		'<br />' + todo.beer +  
-  		'<a id="'+todo.id+'" class="deleteReview">x</a>' +'</li>');
+  		'<li data-review="'+review.id+'"><a class="openReview" data-review="'+review.id+'">'
+  		+ 'Rating:' + review.rating +  '</a> <small>By: ' +review.author+ '</small>' +
+  		'<br />' + review.beer +  
+  		'<a id="'+review.id+'" class="deleteReview">x</a>' +'</li>');
 }
 
 function removeTodo (todo) {
@@ -113,11 +133,12 @@ function sortByRating(a, b) {
   return a.rating < b.rating
 }
 
-function topRated(todo){
-  $('#topRated').append('<p>'+ todo.beer +': ' + todo.rating+ '</p>');
+function topRated(review){
+  $('#topRated').append('<li><a href="#" class="openReview" data-review="'+ review.id +'">'+ review.beer +': ' + review.rating+ '</a></li>');
 }
 
 function searchResults(results, term) {
+  $('#queryTitle').html('<h3>Searching for <strong>' + term + '</strong></h3>');
   console.log('Searching for: ' +  term );
   $('#searchResults').html('');
   if(results.length < 1) {
@@ -131,12 +152,13 @@ function searchResults(results, term) {
 }
 
 
+
 //creates view for a single review
 function renderReview(review){
   console.log(review);
   $('#review').html('');
   $('#review').append(
-    '<h2>'+review.beer+' <small>Beer type</small></h2>'+
+    '<h2>'+review.beer+' <small><a class="dataFilter">'+review.tag+'</a></small></h2>'+
     '<small><p>reviewed by: <strong>'+review.author+'</strong></p></small>' +
     '<p>'+review.notes+'</p>' +
     '<hr>'
