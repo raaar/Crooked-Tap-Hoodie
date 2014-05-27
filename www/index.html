@@ -105,6 +105,21 @@
 
 
 
+
+<div ng-controller="PhoneListCtrl">
+  <h3>Angular Repeater</h3>
+  <ul>
+    <li ng-repeat="beer in beers">
+      <h4>{{beer.beer}} <small>{{beer.tag}}</small></h4>
+      <p>{{beer.tag}}</p>
+    </li>
+  </ul>
+  <!--<pre>{{beers}}</pre>-->
+</div>
+
+
+
+
       <footer class="copy">
         <p>&hearts; hood.ie 2014</p>
       </footer>

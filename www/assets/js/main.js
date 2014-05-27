@@ -165,3 +165,52 @@ function renderReview(review){
     )
 }
 
+
+
+
+var crookedApp = angular.module('crookedApp', []);
+
+crookedApp.controller('PhoneListCtrl', function ($scope) {
+
+    //var dataAsText = JSON.stringify(reviews);
+
+    //db = reviews;
+   // console.log('rev: ');
+
+    //$scope.phones = db;
+    /*
+    $scope.phones = [{'name': 'Nexus S', "_rev":"3-k359ln70t","beer":"Spitfire","tag":"IPA","brewery":"","abv":"5.0","rating":"4","notes":"It's great!","author":"raf","createdBy":"7ly1ixb","updatedAt":"2014-05-26T15:02:07.771Z","createdAt":"2014-05-26T15:01:50.828Z","$public":true,"type":"todo","id":"avnfsz9"},
+                    {"_rev":"103-f9n4knruv","beer":"Kernels","tag":"Stout","brewery":"Kernels","abv":"6.5","rating":"5","notes":"Fucking lovely!","author":"adam","createdBy":"69lwfe0","updatedAt":"2014-05-26T22:54:48.543Z","createdAt":"2014-05-26T15:03:36.808Z","$public":true,"type":"todo","id":"cln99fo"},
+                    {"_rev":"18-jqttdlkc5","beer":"IPA","tag":"IPA","rating":"3","notes":"Stuff","author":"raf","createdBy":"7ly1ixb","updatedAt":"2014-05-26T15:02:07.774Z","createdAt":"2014-05-26T14:23:10.380Z","$public":true,"type":"todo","id":"d5u7iay"},
+                    {"_rev":"16-eakvvh4a6","beer":"Punk","tag":"IPA","rating":"4","notes":"","author":"raf","createdBy":"7ly1ixb","updatedAt":"2014-05-26T15:02:07.773Z","createdAt":"2014-05-26T14:25:22.657Z","$public":true,"type":"todo","id":"n5kvpdn"}];
+    */
+    //console.log($scope.phones);
+
+
+
+  hoodie.global.findAll('todo').done(function (reviews) { 
+
+
+    $scope.$watchCollection('reviews', function(newValue, oldValue) {
+      $scope.beers = reviews; 
+      console.log(newValue);
+    });
+    $scope.$digest();
+
+  // var dataAsText = JSON.stringify(reviews);
+
+  //$('#searchResults').html(dataAsText);
+  //console.log('reviews: ');
+    //console.log(reviews);
+    //var db = reviews;
+    //$scope.phones = reviews;  
+
+    //console.log('data: ');
+    //console.log(reviews[0].beer);
+
+  })    
+//  $scope.phones = reviews;
+//  console.log(db); 
+});
+
+
